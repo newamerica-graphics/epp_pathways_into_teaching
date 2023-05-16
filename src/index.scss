@@ -1,8 +1,22 @@
 .na-dataviz {
-  background-color: #efefef;
-  padding: 20px;
+  // background-color: #efefef;
+  // padding: 20px;
   a {
     font-weight: normal;
     color: #209B93;
   }
+}
+
+.dv-pathways {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.dv-pathway {
+  width: 2em;
+  padding: 2px 0;
+  border: 1px solid #333;
+  margin: 0 0.2em 0.2em 0;
+  text-align: center;
 }
