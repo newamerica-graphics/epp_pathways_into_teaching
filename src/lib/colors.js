@@ -57,4 +57,14 @@ function getDefaultColor(code) {
   return colors[code].medium;
 }
 
-export { colors, getDefaultColor };
+function getColorset(lightness) {
+  return [
+    colors.teal[lightness],
+    colors.purple[lightness],
+    colors.red[lightness],
+    colors.blue[lightness],
+    colors.brown[lightness],
+  ]
+}
+
+export { colors, getDefaultColor, getColorset };
