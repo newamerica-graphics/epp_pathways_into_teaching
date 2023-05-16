@@ -18,6 +18,7 @@ export default function (el, data) {
   </div>
   <div class="dv-main">
     <div class="dv-question"></div>
+    <ul class="dv-legend"></ul>
     <div class="dv-pathways"></div>
     <div class="dv-info"></div>
   </div>
@@ -26,6 +27,14 @@ export default function (el, data) {
   let current_question = data.questions[0]
   let current_question_code = current_question.question_code
   let current_answers = data.answers.filter(a => a.question == current_question_code)
+
+  viz.select('.dv-legend')
+    .selectAll('li')
+    .data(current_answers)
+    .join('li')
+      .html(d => d.answer_text)
+      .style('background-color', d => colors[d.color].lightest)
+      .style('color', d => colors[d.color].darkest)
 
   viz.select('.dv-pathways')
     .selectAll('div')
