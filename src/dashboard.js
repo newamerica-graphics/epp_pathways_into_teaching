@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import './index.scss'
-import { colors, getColorset } from './lib/colors'
+import { colors } from './lib/colors'
 
 export default function (el, data) {
   const viz = d3.select(el).html(`
@@ -16,8 +16,9 @@ export default function (el, data) {
   </div>
   `)
 
-  let current_question = data.questions[0].question_code
-  let current_answers = data.answers.filter(a => a['question'] == current_question)
+  let current_question = data.questions[0]
+  let current_question_code = current_question.question_code
+  let current_answers = data.answers.filter(a => a.question == current_question_code)
 
   viz.select('.dv-pathways')
     .selectAll('div')
@@ -25,8 +26,18 @@ export default function (el, data) {
     .join('div')
       .classed('dv-pathway', true)
       .html(d => d["usps"])
-      // .html(d => current_answers.findIndex(a => a['answer_code'] == d[current_question]))
-      .sort(d => current_answers.findIndex(a => a['answer_code'] == d[current_question]))
-      .style('background-color', d => getColorset('light')[current_answers.findIndex(a => a['answer_code'] == d[current_question])])
-      // .style('background-color', d => colors[current_answers.find(a => a['answer_code'] == d[current_question]).color].light)
+      .sort((a, b) => current_answers.findIndex(an => an['answer_code'] == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
+      .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')].light)
+      .on("click", onclick)
+
+  function onclick(e, d) {
+    viz.select('.dv-info')
+      .html(`
+        <div>${d.state}</div>
+        <div>${d.pathway}</div>
+        <div>Credential: ${d.credential}</div>
+        <div>${current_question.question_text}: ${d[current_question_code]}</div>
+      `)
+
+  }
 }
