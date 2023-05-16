@@ -1,6 +1,13 @@
 import * as d3 from 'd3'
+import { marked } from 'marked'
 import './index.scss'
 import { colors } from './lib/colors'
+
+marked.use({
+  headerIds: false,
+  mangle: false,
+  breaks: true,
+});
 
 export default function (el, data) {
   const viz = d3.select(el).html(`
@@ -34,8 +41,8 @@ export default function (el, data) {
     viz.select('.dv-info')
       .html(`
         <div>${d.state}</div>
-        <div>${d.pathway}</div>
-        <div>Credential: ${d.credential}</div>
+        <div>${marked.parseInline(d.pathway)}</div>
+        <div>Credential: ${marked.parseInline(d.credential)}</div>
         <div>${current_question.question_text}: ${d[current_question_code]}</div>
       `)
 
