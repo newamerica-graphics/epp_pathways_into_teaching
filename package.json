@@ -1,5 +1,5 @@
 {
-  "name": "data_viz_project_template",
+  "name": "epp_pathways_into_teaching",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
@@ -10,7 +10,7 @@
     "deploy": "webpack --mode production --env NODE_ENV=production --env deploy && ./deploy.sh $npm_package_name",
     "watch": "webpack --watch"
   },
-  "author": "",
+  "author": "nmorduch",
   "license": "MIT",
   "dependencies": {
     "webpack-dev-server": "^4.11.1"
