@@ -14,7 +14,6 @@ export default function (el, data) {
   <div class="dv-header">
     <h1>Pathways into Teaching</h1>
     <!--div>description TK</div-->
-    <!--div class="dv-filters"></div-->
   </div>
   <div class="dv-main">
     <div class="dv-sidebar">
@@ -25,6 +24,18 @@ export default function (el, data) {
     </div>
   </div>
   `)
+
+  viz.select('.dv-filters')
+    .selectAll('div')
+    .data(data.filters)
+    .join('div')
+      .html(d => d.type == 'heading' ? `<h3>${d.text}</h3>` : `<h4>${d.text}</h4>`)
+      .classed('dv-filter', true)
+      .on('click', onFilterClick)
+  
+  const onFilterClick = (d) => {
+    d.active = true
+  }
 
   const questions = viz.select('.dv-questions')
     .selectAll('div')
@@ -56,7 +67,7 @@ export default function (el, data) {
         .html(d => d["usps"])
         .sort((a, b) => current_answers.findIndex(an => an['answer_code'] == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
         .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
-        .on("click", onclick)
+        .on("click", onPathwayClick)
         
       })
       
@@ -87,7 +98,7 @@ export default function (el, data) {
     infoBox.html('Click on a pathway for more information.')
   }
     
-  function onclick(e, d) {
+  function onPathwayClick(e, d) {
     unhighlightPathway()
     if (!d.isSelected) {
       highlightPathway(d)
