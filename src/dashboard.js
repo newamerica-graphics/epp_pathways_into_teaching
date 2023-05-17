@@ -17,10 +17,13 @@ export default function (el, data) {
     <!--div class="dv-filters"></div-->
   </div>
   <div class="dv-main">
-    <div class="dv-question"></div>
-    <ul class="dv-legend"></ul>
-    <div class="dv-pathways"></div>
-    <div class="dv-info"></div>
+    <div class="dv-question">
+      <ul class="dv-legend"></ul>
+      <div class="dv-pathways-container">
+        <div class="dv-pathways"></div>
+        <div class="dv-info"></div>
+      </div>
+    </div>
   </div>
   `)
 
@@ -64,7 +67,7 @@ export default function (el, data) {
     selectedPathway
       .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')].light)
       .style('color', null)
-      infoBox.html('')
+      infoBox.html('Click on a pathway for more information.')
     }
     
   function onclick(e, d) {
