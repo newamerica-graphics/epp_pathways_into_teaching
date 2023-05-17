@@ -45,15 +45,37 @@ export default function (el, data) {
       .sort((a, b) => current_answers.findIndex(an => an['answer_code'] == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
       .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')].light)
       .on("click", onclick)
+  
+  let selectedPathway
+  let infoBox = viz.select('.dv-info')
 
+  const selectPathway = (d) => {
+    selectedPathway
+      .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')].darkest)
+      .style('color', 'white')
+    infoBox.html(`
+      <div>${d.state}</div>
+      <div>${marked.parseInline(d.pathway)}</div>
+      <div>Credential: ${marked.parseInline(d.credential)}</div>
+      <div>${current_question.question_text}: ${d[current_question_code]}</div>
+    `)
+  }
+  const unselectPathway = (d) => {
+    selectedPathway
+      .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')].light)
+      .style('color', null)
+      infoBox.html('')
+    }
+    
   function onclick(e, d) {
-    viz.select('.dv-info')
-      .html(`
-        <div>${d.state}</div>
-        <div>${marked.parseInline(d.pathway)}</div>
-        <div>Credential: ${marked.parseInline(d.credential)}</div>
-        <div>${current_question.question_text}: ${d[current_question_code]}</div>
-      `)
-
+    if (selectedPathway) {
+      unselectPathway(selectedPathway.datum())
+      if (selectedPathway.datum() == d) {
+        selectedPathway = null
+        return
+      }
+    }
+    selectedPathway = d3.select(this)
+    selectPathway(selectedPathway.datum())
   }
 }
