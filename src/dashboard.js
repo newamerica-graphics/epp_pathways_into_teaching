@@ -17,8 +17,10 @@ export default function (el, data) {
   </div>
   <div class="dv-main">
     <div class="dv-sidebar">
-      <div class="dv-filters"></div>
-      <div class="dv-info"></div>
+      <div class="dv-filters">
+        <h2>Filter pathways</h2>
+      </div>
+      <div class="dv-info">Click on a pathway for more information.</div>
     </div>
     <div class="dv-questions"></div>
     </div>
@@ -29,7 +31,7 @@ export default function (el, data) {
     .selectAll('div')
     .data(data.filters)
     .join('div')
-      .html(d => d.type == 'heading' ? `<h3>${d.text}</h3>` : `<h4>${d.text}</h4>`)
+      .html(d => d.type == 'heading' ? `<h3>${d.text}</h3>` : `${d.text}`)
       .classed('dv-filter', true)
       .on('click', onFilterClick)
   
