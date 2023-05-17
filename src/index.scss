@@ -17,6 +17,12 @@
   flex-shrink: 0;
 }
 
+.dv-filter {
+  &.active {
+    font-weight: bold;
+  }
+}
+
 .dv-info {
   margin-top: 1em;
   padding: 0.5em;

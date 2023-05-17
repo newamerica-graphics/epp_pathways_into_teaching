@@ -27,16 +27,23 @@ export default function (el, data) {
   </div>
   `)
 
+  let pathways = data.pathways
+
   viz.select('.dv-filters')
     .selectAll('div')
     .data(data.filters)
     .join('div')
-      .html(d => d.type == 'heading' ? `<h3>${d.text}</h3>` : `${d.text}`)
+      .html(d => d.type == 'filter' ? `${d.text}` : `<h3>${d.text}</h3>`)
       .classed('dv-filter', true)
       .on('click', onFilterClick)
   
-  const onFilterClick = (d) => {
-    d.active = true
+  function onFilterClick(e, d) {
+    if (d.type == 'filter') {
+      d.active = !d.active
+      d3.select(this)
+        .classed('active', d.active)
+      pathways = data.pathways.filter(p => p[d.filter_name] == d.filter_code)
+    }
   }
 
   const questions = viz.select('.dv-questions')
@@ -47,7 +54,7 @@ export default function (el, data) {
   questions
     .append('h3')
       .html(d => d.question_text)
-        
+  
   questions.each(function(q) {
     let current_question_code = q.question_code
     let current_answers = data.answers.filter(a => a.question == current_question_code)
@@ -62,7 +69,7 @@ export default function (el, data) {
     d3.select(this).append('div')
       .classed('dv-pathways', true)
       .selectAll('div')
-      .data(data.pathways)
+      .data(pathways)
       .join('div')
         // .attr('color', d => current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')
         .classed('dv-pathway', true)
@@ -76,8 +83,7 @@ export default function (el, data) {
       
   let infoBox = viz.select('.dv-info')
 
-
-  const highlightPathway = (d) => {
+  function highlightPathway (d) {
     d.isSelected = true
     viz.selectAll('.dv-pathway')
       .filter(p => p.isSelected)
@@ -91,7 +97,7 @@ export default function (el, data) {
       `)
       // <div>${current_question.question_text}: ${d[current_question_code]}</div>
   }
-  const unhighlightPathway = () => {
+  function unhighlightPathway() {
     viz.selectAll('.dv-pathway')
       .filter(d => d.isSelected)
       // .style('color', null)
