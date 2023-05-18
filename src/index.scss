@@ -58,6 +58,12 @@
   overflow-y: scroll;
 }
 
+.dv-question {
+  &--indented {
+    margin-left: 1em;
+  }
+}
+
 .dv-filters {
   grid-area: filters;
   overflow-y: scroll;

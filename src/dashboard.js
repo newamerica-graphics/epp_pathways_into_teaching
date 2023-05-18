@@ -52,6 +52,8 @@ export default function (el, data) {
     .selectAll('div')
     .data(data.questions)
     .join('div')
+      .classed('dv-question', true)
+      .classed('dv-question--indented', d => d.heading_level == 'h4')
 
   questions
     .append('div')
