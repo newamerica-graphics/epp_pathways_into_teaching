@@ -54,8 +54,8 @@ export default function (el, data) {
     .join('div')
 
   questions
-    .append('h3')
-      .html(d => d.question_text)
+    .append('div')
+      .html(d => `${d.heading_before ? `<h2>${d.heading_before}</h2>` : ''}<${d.heading_level}>${d.question_text}</${d.heading_level}>`)
   
   
   questions.each(function(q) {
