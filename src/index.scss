@@ -60,7 +60,8 @@
 
 .dv-question {
   &--indented {
-    margin-left: 1em;
+    border-left: 1px solid #575757;
+    padding-left: 1em;
   }
 }
 
