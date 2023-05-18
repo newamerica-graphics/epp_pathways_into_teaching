@@ -27,9 +27,9 @@ export default function (el, data) {
   </div>
   `)
 
-  let pathways = data.pathways
+  let pathwaysData = data.pathways
 
-  viz.select('.dv-filters')
+  let filters = viz.select('.dv-filters')
     .selectAll('div')
     .data(data.filters)
     .join('div')
@@ -39,10 +39,16 @@ export default function (el, data) {
   
   function onFilterClick(e, d) {
     if (d.type == 'filter') {
-      d.active = !d.active
-      d3.select(this)
-        .classed('active', d.active)
-      pathways = data.pathways.filter(p => p[d.filter_name] == d.filter_code)
+      if (d.active) {
+        d.active = false
+        pathwaysData = data.pathways
+      } else {
+        filters.each(f => f.active = false)
+        d.active = true
+        pathwaysData = data.pathways.filter(p => p[d.filter_name] == d.code)
+      }
+      filters.classed('active', f => f.active)
+      updatePathways()
     }
   }
 
@@ -54,6 +60,7 @@ export default function (el, data) {
   questions
     .append('h3')
       .html(d => d.question_text)
+  
   
   questions.each(function(q) {
     let current_question_code = q.question_code
@@ -68,19 +75,28 @@ export default function (el, data) {
       .style('color', d => colors[d.color].darkest)
     d3.select(this).append('div')
       .classed('dv-pathways', true)
-      .selectAll('div')
-      .data(pathways)
-      .join('div')
+  })
+  
+  function updatePathways() {
+    questions.each(function (q) {
+      let current_question_code = q.question_code
+      let current_answers = data.answers.filter(a => a.question == current_question_code)
+      d3.select(this).select('.dv-pathways')
+        .selectAll('div')
+        .data(pathwaysData)
+        .join('div')
         // .attr('color', d => current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')
         .classed('dv-pathway', true)
         .html(d => d["usps"])
         .sort((a, b) => current_answers.findIndex(an => an['answer_code'] == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
-        .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
+        // .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
+        .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')].light)
         .on("click", onPathwayClick)
-        
-      })
-      
-      
+    })
+  }
+
+  updatePathways()
+
   let infoBox = viz.select('.dv-info')
 
   function highlightPathway (d) {
@@ -102,7 +118,7 @@ export default function (el, data) {
       .filter(d => d.isSelected)
       // .style('color', null)
       .style('font-weight', 'normal')
-      .datum(d => d.isSelected = false)
+      .each(d => d.isSelected = false)
     infoBox.html('Click on a pathway for more information.')
   }
     
