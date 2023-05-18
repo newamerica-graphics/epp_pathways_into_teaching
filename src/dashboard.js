@@ -35,6 +35,7 @@ export default function (el, data) {
     .join('div')
       .html(d => d.type == 'filter' ? `${d.text}` : `<h3>${d.text}</h3>`)
       .classed('dv-filter', true)
+      .classed('dv-filter--indent', d => d.indent)
       .on('click', onFilterClick)
   
   function onFilterClick(e, d) {
@@ -45,7 +46,8 @@ export default function (el, data) {
       } else {
         filters.each(f => f.active = false)
         d.active = true
-        pathwaysData = data.pathways.filter(p => p[d.filter_name] == d.code)
+        let filterNot = d.modifier == 'NOT'
+        pathwaysData = data.pathways.filter(p => filterNot ? p[d.filter_name] != d.code : p[d.filter_name] == d.code)
       }
       filters.classed('active', f => f.active)
       updatePathways()

@@ -21,6 +21,10 @@
   &.active {
     font-weight: bold;
   }
+
+  &--indent {
+    padding-left: 1em;
+  }
 }
 
 .dv-info {
