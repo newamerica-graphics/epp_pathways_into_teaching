@@ -103,14 +103,16 @@ export default function (el, data) {
       <div class="dv-info__heading">${marked.parseInline(d.pathway)}</div>
       <dt>Credential</dt><dd>${marked.parseInline(d.credential)}</dd>
       ${data.questions.reduce((acc, q) => acc + `
-        <dt>${q.question_text}</dt>
-        <dd class="color color--${data.answers.find(a => a.answer_code == d[q.question_code])
-          ? data.answers.find(a => a.answer_code == d[q.question_code]).color
-          : 'grey'}">
-          ${data.answers.find(a => a.answer_code == d[q.question_code])
-            ? data.answers.find(a => a.answer_code == d[q.question_code]).answer_text
-            : d[q.question_code]}
-        </dd>
+        <div class="dv-info__item ${q.heading_level == 'h4' ? 'dv-info__item--indented' : ''}">
+          <dt>${q.question_text}</dt>
+          <dd class="color color--${data.answers.find(a => a.answer_code == d[q.question_code])
+            ? data.answers.find(a => a.answer_code == d[q.question_code]).color
+            : 'grey'}">
+            ${data.answers.find(a => a.answer_code == d[q.question_code])
+              ? data.answers.find(a => a.answer_code == d[q.question_code]).answer_text
+              : d[q.question_code]}
+          </dd>
+        </div>
       `, '')}
       ${d.notes ? `<dt>Notes</dt><dd>${marked.parseInline(d.notes)}</dd>` : ''}
     `)

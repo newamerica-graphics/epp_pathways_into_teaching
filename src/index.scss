@@ -91,6 +91,10 @@
   &__heading a {
     font-weight: bold;
   }
+
+  &__item--indented {
+    margin-left: 1em;
+  }
 }
 
 .dv-legend {
