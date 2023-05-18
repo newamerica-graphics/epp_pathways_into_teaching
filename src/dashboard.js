@@ -89,7 +89,7 @@ export default function (el, data) {
         .join('div')
         .classed('dv-pathway', true)
         .html(d => d["usps"])
-        .sort((a, b) => current_answers.findIndex(an => an['answer_code'] == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
+        .sort((a, b) => current_answers.findIndex(an => an.answer_code == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
         .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
         .style('color', d => d.isSelected ? 'white' : null)
         .on("click", onPathwayClick)
@@ -105,9 +105,18 @@ export default function (el, data) {
     infoBox.html(`
       <div>${d.state}</div>
       <div class="dv-info__heading">${marked.parseInline(d.pathway)}</div>
-      <div>Credential: ${marked.parseInline(d.credential)}</div>
+      <dt>Credential</dt><dd>${marked.parseInline(d.credential)}</dd>
+      ${data.questions.reduce((acc, q) => acc + `
+        <dt>${q.question_text}</dt>
+        <dd class="color color--${data.answers.find(a => a.answer_code == d[q.question_code])
+          ? data.answers.find(a => a.answer_code == d[q.question_code]).color
+          : 'grey'}">
+          ${data.answers.find(a => a.answer_code == d[q.question_code])
+            ? data.answers.find(a => a.answer_code == d[q.question_code]).answer_text
+            : d[q.question_code]}
+        </dd>
+      `, '')}
       `)
-      // <div>${current_question.question_text}: ${d[current_question_code]}</div>
   }
   function unhighlightPathway() {
     viz.selectAll('.dv-pathway')
