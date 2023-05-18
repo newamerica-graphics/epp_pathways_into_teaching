@@ -14,7 +14,7 @@ async function fetchData() {
   const pathways = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/pathways_min')
   const filters = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/filters_min')
   const questions = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/questions_min')
-  const answers = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/question_answers')
+  const answers = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/answers_min')
   return {
     pathways: await pathways.json(),
     filters: await filters.json(),
