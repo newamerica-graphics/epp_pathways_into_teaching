@@ -85,12 +85,11 @@ export default function (el, data) {
         .selectAll('div')
         .data(pathwaysData)
         .join('div')
-        // .attr('color', d => current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')
         .classed('dv-pathway', true)
         .html(d => d["usps"])
         .sort((a, b) => current_answers.findIndex(an => an['answer_code'] == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
-        // .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
-        .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')].light)
+        .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
+        .style('color', d => d.isSelected ? 'white' : null)
         .on("click", onPathwayClick)
     })
   }
@@ -101,11 +100,6 @@ export default function (el, data) {
 
   function highlightPathway (d) {
     d.isSelected = true
-    viz.selectAll('.dv-pathway')
-      .filter(p => p.isSelected)
-        // .style('color', 'white')
-        .style('font-weight', 'bold')
-
     infoBox.html(`
       <div>${d.state}</div>
       <div>${marked.parseInline(d.pathway)}</div>
@@ -115,17 +109,17 @@ export default function (el, data) {
   }
   function unhighlightPathway() {
     viz.selectAll('.dv-pathway')
-      .filter(d => d.isSelected)
-      // .style('color', null)
-      .style('font-weight', 'normal')
       .each(d => d.isSelected = false)
     infoBox.html('Click on a pathway for more information.')
   }
     
   function onPathwayClick(e, d) {
-    unhighlightPathway()
-    if (!d.isSelected) {
+    if (d.isSelected) {
+      unhighlightPathway()
+    } else {
+      unhighlightPathway()
       highlightPathway(d)
     }
+    updatePathways()
   }
 }
