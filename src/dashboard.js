@@ -104,7 +104,7 @@ export default function (el, data) {
     d.isSelected = true
     infoBox.html(`
       <div>${d.state}</div>
-      <div>${marked.parseInline(d.pathway)}</div>
+      <div class="dv-info__heading">${marked.parseInline(d.pathway)}</div>
       <div>Credential: ${marked.parseInline(d.credential)}</div>
       `)
       // <div>${current_question.question_text}: ${d[current_question_code]}</div>

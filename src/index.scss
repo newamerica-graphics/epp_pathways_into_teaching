@@ -31,6 +31,11 @@
   margin-top: 1em;
   padding: 0.5em;
   background-color: #efefef;
+
+  &__heading,
+  &__heading a {
+    font-weight: bold;
+  }
 }
 
 .dv-legend {
