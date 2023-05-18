@@ -112,7 +112,8 @@ export default function (el, data) {
             : d[q.question_code]}
         </dd>
       `, '')}
-      `)
+      ${d.notes ? `<dt>Notes</dt><dd>${marked.parseInline(d.notes)}</dd>` : ''}
+    `)
   }
   function unhighlightPathway() {
     viz.selectAll('.dv-pathway')
