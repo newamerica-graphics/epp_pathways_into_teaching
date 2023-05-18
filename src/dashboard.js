@@ -11,17 +11,11 @@ marked.use({
 
 export default function (el, data) {
   const viz = d3.select(el).html(`
-  <div class="dv-header">
-    <h1>Pathways into Teaching</h1>
-    <!--div>description TK</div-->
-  </div>
   <div class="dv-main">
-    <div class="dv-sidebar">
-      <div class="dv-filters">
-        <h2>Filter pathways</h2>
-      </div>
-      <div class="dv-info">Click on a pathway for more information.</div>
+    <div class="dv-filters">
+      <h2>Filter pathways</h2>
     </div>
+    <div class="dv-info">Click on a pathway for more information.</div>
     <div class="dv-questions"></div>
     </div>
   </div>

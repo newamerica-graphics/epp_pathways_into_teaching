@@ -43,13 +43,24 @@
 
 
 .dv-main {
-  display: flex;
+  display: grid;
+  column-gap: 2em;
+  row-gap: 1em;
+  grid-template: 
+    "filters questions"
+    "info    questions"
+    / 15em auto;
+  height: calc(100vh - 8em);
 }
 
-.dv-sidebar {
-  width: 15em;
-  margin-right: 2em;
-  flex-shrink: 0;
+.dv-questions {
+  grid-area: questions;
+  overflow-y: scroll;
+}
+
+.dv-filters {
+  grid-area: filters;
+  overflow-y: scroll;
 }
 
 .dv-filter {
@@ -63,6 +74,8 @@
 }
 
 .dv-info {
+  grid-area: info;
+  overflow-y: scroll;
   margin-top: 1em;
   padding: 0.5em;
   background-color: #efefef;
