@@ -76,7 +76,12 @@
   }
 
   &--indent {
-    padding-left: 1em;
+    margin-left: 1em;
+  }
+
+  &__count {
+    color: #717171;
+    margin-left: 0.3em;
   }
 }
 
@@ -121,8 +126,6 @@
   flex-wrap: wrap;
   align-content: flex-start;
   flex-direction: column;
-  // height: 25em;
-
 }
 
 .dv-pathway {

@@ -27,7 +27,10 @@ export default function (el, data) {
     .selectAll('div')
     .data(data.filters)
     .join('div')
-      .html(d => d.type == 'filter' ? `${d.text}` : `<h3>${d.text}</h3>`)
+      .html(d => d.type == 'filter'
+        ? `${d.text}
+          <span class="dv-filter__count">${data.pathways.filter(p => (d.modifier == 'NOT') ? p[d.filter_name] != d.code : p[d.filter_name] == d.code).length}<span>`
+        : `<h3>${d.text}</h3>`)
       .classed('dv-filter', true)
       .classed('dv-filter--indent', d => d.indent)
       .on('click', onFilterClick)
