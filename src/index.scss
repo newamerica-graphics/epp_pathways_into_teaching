@@ -68,9 +68,20 @@
 .dv-filters {
   grid-area: filters;
   overflow-y: scroll;
+
+  &__list {
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .dv-filter {
+  font-family: inherit;
+  font-size: inherit;
+  display: block;
+  line-height: inherit;
+  margin-bottom: 0.2em;
+
   &.active {
     font-weight: bold;
   }

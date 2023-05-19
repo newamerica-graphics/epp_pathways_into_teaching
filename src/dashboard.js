@@ -23,32 +23,41 @@ export default function (el, data) {
 
   let pathwaysData = data.pathways
   let questionsData = data.questions.filter(q => q.include == 'TRUE')
+  let filtersData = d3.groups(data.filters, d => d.heading)
 
-  let filters = viz.select('.dv-filters')
+  const filterHeadings = viz.select('.dv-filters')
     .selectAll('div')
-    .data(data.filters)
+    .data(filtersData)
     .join('div')
-      .html(d => d.type == 'filter'
-        ? `${d.text}
-          <span class="dv-filter__count">${data.pathways.filter(p => (d.modifier == 'NOT') ? p[d.filter_name] != d.code : p[d.filter_name] == d.code).length}<span>`
-        : `<h3>${d.text}</h3>`)
-      .classed('dv-filter', true)
-      .classed('dv-filter--indent', d => d.indent)
-      .on('click', onFilterClick)
+      .html(d => `<h3>${d[0]}</h3>`)
+      
+  filterHeadings.each(function(f, i) {
+    d3.select(this)
+      .append('ul')
+        .classed('dv-filters__list', true)
+      .selectAll('li')
+      .data(filtersData[i][1])
+      .join('li')
+        .html(d => `${d.text}
+            <span class="dv-filter__count">${data.pathways.filter(p => (d.modifier == 'NOT') ? p[d.filter_name] != d.code : p[d.filter_name] == d.code).length}<span>`)
+        .classed('dv-filter', true)
+        .classed('dv-filter--indent', d => d.indent)
+        .on('click', onFilterClick)
+  })
   
+  let filters = filterHeadings.selectAll('.dv-filter')
+
   function onFilterClick(e, d) {
-    if (d.type == 'filter') {
-      d.active = !d.active
-      filters.classed('active', f => f.active)
-      pathwaysData = data.pathways
-      data.filters.forEach(f => {
-        if (f.type == 'filter' && f.active) {
-          pathwaysData = pathwaysData.filter(p => (f.modifier == 'NOT') ? p[f.filter_name] != f.code : p[f.filter_name] == f.code)
-          console.log(pathwaysData)
-        }
-      })
-      updatePathways()
-    }
+    d.active = !d.active
+    pathwaysData = data.pathways
+    filters
+      .classed('active', f => f.active)
+      .each(f => f.active && (
+        pathwaysData = pathwaysData.filter(p => (f.modifier == 'NOT')
+          ? p[f.filter_name] != f.code
+          : p[f.filter_name] == f.code)
+      ))
+    updatePathways()
   }
 
   const questions = viz.select('.dv-questions')
