@@ -74,7 +74,14 @@ export default function (el, data) {
     d3.select(this).append('div')
       .classed('dv-pathways', true)
   })
-  
+
+  function updatePathwaysHeight() {
+    let questionsWidth = questions.node().getBoundingClientRect().width
+    viz.selectAll('.dv-pathways')
+      .style('height', `${24.7*Math.ceil(pathwaysData.length/((questionsWidth-30)/35))}px`)
+  }
+
+
   function updatePathways() {
     questions.each(function (q) {
       let current_question_code = q.question_code
@@ -83,13 +90,14 @@ export default function (el, data) {
         .selectAll('div')
         .data(pathwaysData)
         .join('div')
-        .classed('dv-pathway', true)
-        .html(d => d["usps"])
-        .sort((a, b) => current_answers.findIndex(an => an.answer_code == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
-        .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
-        .style('color', d => d.isSelected ? 'white' : null)
-        .on("click", onPathwayClick)
+          .classed('dv-pathway', true)
+          .html(d => d["usps"])
+          .sort((a, b) => current_answers.findIndex(an => an.answer_code == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
+          .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
+          .style('color', d => d.isSelected ? 'white' : null)
+          .on("click", onPathwayClick)
     })
+    updatePathwaysHeight()
   }
 
   updatePathways()
@@ -132,4 +140,16 @@ export default function (el, data) {
     }
     updatePathways()
   }
+
+  let timeout = false // holder for timeout id
+
+  // window.resize event listener
+  window.addEventListener('resize', function() {
+    // clear the timeout
+    clearTimeout(timeout);
+    // start timing for event "completion"
+    timeout = setTimeout(updatePathwaysHeight, 250);
+  });
+
+  updatePathwaysHeight()
 }
