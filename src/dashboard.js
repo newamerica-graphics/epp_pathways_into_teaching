@@ -121,11 +121,11 @@ export default function (el, data) {
       ${questionsData.reduce((acc, q) => acc + `
         <div class="dv-info__item ${q.heading_level == 'h4' ? 'dv-info__item--indented' : ''}">
           <dt>${q.question_text}</dt>
-          <dd class="color color--${data.answers.find(a => a.answer_code == d[q.question_code])
-            ? data.answers.find(a => a.answer_code == d[q.question_code]).color
+          <dd class="color color--${data.answers.filter(a => a.question == q.question_code).find(a => a.answer_code == d[q.question_code])
+            ? data.answers.filter(a => a.question == q.question_code).find(a => a.answer_code == d[q.question_code]).color
             : 'grey'}">
-            ${data.answers.find(a => a.answer_code == d[q.question_code])
-              ? data.answers.find(a => a.answer_code == d[q.question_code]).answer_text
+            ${data.answers.filter(a => a.question == q.question_code).find(a => a.answer_code == d[q.question_code])
+              ? data.answers.filter(a => a.question == q.question_code).find(a => a.answer_code == d[q.question_code]).answer_text
               : d[q.question_code]}
           </dd>
         </div>
