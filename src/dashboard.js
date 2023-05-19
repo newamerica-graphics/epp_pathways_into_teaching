@@ -38,16 +38,15 @@ export default function (el, data) {
   
   function onFilterClick(e, d) {
     if (d.type == 'filter') {
-      if (d.active) {
-        d.active = false
-        pathwaysData = data.pathways
-      } else {
-        filters.each(f => f.active = false)
-        d.active = true
-        let filterNot = d.modifier == 'NOT'
-        pathwaysData = data.pathways.filter(p => filterNot ? p[d.filter_name] != d.code : p[d.filter_name] == d.code)
-      }
+      d.active = !d.active
       filters.classed('active', f => f.active)
+      pathwaysData = data.pathways
+      data.filters.forEach(f => {
+        if (f.type == 'filter' && f.active) {
+          pathwaysData = pathwaysData.filter(p => (f.modifier == 'NOT') ? p[f.filter_name] != f.code : p[f.filter_name] == f.code)
+          console.log(pathwaysData)
+        }
+      })
       updatePathways()
     }
   }
