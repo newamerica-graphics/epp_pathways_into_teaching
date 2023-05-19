@@ -126,8 +126,7 @@ export default function (el, data) {
     `)
   }
   function unhighlightPathway() {
-    viz.selectAll('.dv-pathway')
-      .each(d => d.isSelected = false)
+    data.pathways.forEach(d => d.isSelected = false)
     infoBox.html('Click on a pathway for more information.')
   }
     
