@@ -54,15 +54,9 @@ export default function (el, data) {
     .join('div')
       .classed('dv-question', true)
       .classed('dv-question--indented', d => d.heading_level == 'h4')
-
-  questions
-    .append('div')
       .html(d => `${d.heading_before ? `<h2>${d.heading_before}</h2>` : ''}<${d.heading_level}>${d.question_text}</${d.heading_level}>`)
   
-  
   questions.each(function(q) {
-    let current_question_code = q.question_code
-    let current_answers = data.answers.filter(a => a.question == current_question_code)
     d3.select(this).append('div')
       .classed('dv-legend', true)
     d3.select(this).append('div')
@@ -80,7 +74,8 @@ export default function (el, data) {
     questions.each(function (q) {
       let current_question_code = q.question_code
       let current_answers = data.answers.filter(a => a.question == current_question_code)
-      d3.select(this).select('.dv-pathways')
+      let question = d3.select(this)
+      question.select('.dv-pathways')
         .selectAll('div')
         .data(pathwaysData)
         .join('div')
@@ -90,7 +85,7 @@ export default function (el, data) {
           .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
           .style('color', d => d.isSelected ? 'white' : null)
           .on("click", onPathwayClick)
-      d3.select(this).select('.dv-legend')
+      question.select('.dv-legend')
         .selectAll('li')
         .data(current_answers)
         .join('li')
