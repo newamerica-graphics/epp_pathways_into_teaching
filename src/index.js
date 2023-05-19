@@ -11,10 +11,10 @@ const settings = {
 
 // TODO: use https://na-data-sheetsstorm.s3.us-west-2.amazonaws.com/prod/epp/pathways_into_teaching.json
 async function fetchData() {
-  const pathways = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/pathways_min')
-  const filters = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/filters_min')
-  const questions = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/questions_min')
-  const answers = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/answers_min')
+  const pathways = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/pathways')
+  const filters = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/filters')
+  const questions = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/questions')
+  const answers = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/answers')
   return {
     pathways: await pathways.json(),
     filters: await filters.json(),

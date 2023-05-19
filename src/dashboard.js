@@ -22,6 +22,7 @@ export default function (el, data) {
   `)
 
   let pathwaysData = data.pathways
+  let questionsData = data.questions.filter(q => q.include == 'TRUE')
 
   let filters = viz.select('.dv-filters')
     .selectAll('div')
@@ -53,7 +54,7 @@ export default function (el, data) {
 
   const questions = viz.select('.dv-questions')
     .selectAll('div')
-    .data(data.questions)
+    .data(questionsData)
     .join('div')
       .classed('dv-question', true)
       .classed('dv-question--indented', d => d.heading_level == 'h4')
@@ -109,7 +110,7 @@ export default function (el, data) {
       <div>${d.state}</div>
       <div class="dv-info__heading">${marked.parseInline(d.pathway)}</div>
       <dt>Credential</dt><dd>${marked.parseInline(d.credential)}</dd>
-      ${data.questions.reduce((acc, q) => acc + `
+      ${questionsData.reduce((acc, q) => acc + `
         <div class="dv-info__item ${q.heading_level == 'h4' ? 'dv-info__item--indented' : ''}">
           <dt>${q.question_text}</dt>
           <dd class="color color--${data.answers.find(a => a.answer_code == d[q.question_code])
