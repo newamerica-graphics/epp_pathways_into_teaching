@@ -66,7 +66,11 @@ export default function (el, data) {
     .join('div')
       .classed('dv-question', true)
       .classed('dv-question--indented', d => d.heading_level == 'h4')
-      .html(d => `${d.heading_before ? `<h2>${d.heading_before}</h2>` : ''}<${d.heading_level}>${d.question_text}</${d.heading_level}>`)
+      .html(d => `
+        ${d.heading_before ? `<h2>${d.heading_before}</h2>` : ''}
+        <${d.heading_level}>${d.question_text}</${d.heading_level}>
+        ${d.description ? `<p class="dv-question__description">${d.description}</p>` : ''}
+      `)
   
   questions.each(function(q) {
     d3.select(this).append('div')
