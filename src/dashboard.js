@@ -13,7 +13,7 @@ export default function (el, data) {
   const viz = d3.select(el).html(`
   <div class="dv-main">
     <div class="dv-filters">
-      <h2>Filter pathways</h2>
+      <h2>Filter pathways <button id="clearFilters">Clear</button></h2>
     </div>
     <div class="dv-info">Click on a pathway for more information.</div>
     <div class="dv-questions"></div>
@@ -49,7 +49,7 @@ export default function (el, data) {
 
   let filters = viz.selectAll('.dv-filters__select')
 
-  function onFilterChange(e, d) {
+  function onFilterChange() {
     pathwaysData = data.pathways
     filters.each(function (f, i) {
       let value = d3.select(this).property("value")
@@ -60,6 +60,13 @@ export default function (el, data) {
     })
     updatePathways()
   }
+
+  viz.select('#clearFilters').on('click', () => {
+    filters.each(function (f) {
+      d3.select(this).property('value', 'All')
+    })
+    onFilterChange()
+  })
 
   const questions = viz.select('.dv-questions')
     .selectAll('div')

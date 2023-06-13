@@ -69,6 +69,19 @@
   }
 }
 
+#clearFilters {
+  background: none;
+  border: 1px solid #333;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 0.5em;
+
+  &:hover {
+    color: white;
+    background-color: #333;
+  }
+}
+
 .dv-filters {
   grid-area: filters;
   overflow-y: scroll;
