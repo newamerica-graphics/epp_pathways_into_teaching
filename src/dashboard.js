@@ -24,39 +24,40 @@ export default function (el, data) {
   let pathwaysData = data.pathways
   let questionsData = data.questions.filter(q => q.include == 'TRUE')
   let filtersData = d3.groups(data.filters, d => d.heading)
+  filtersData.forEach(f => f[1].splice(0, 0, { text: 'All', filter_name: f[1][0].filter_name }))
 
   const filterHeadings = viz.select('.dv-filters')
     .selectAll('div')
     .data(filtersData)
     .join('div')
-      .html(d => `<h3>${d[0]}</h3>`)
+      .html((d, i) => `<label class="dv-filters__label" for="filter${i}">${d[0]}</label>`)
       
-  filterHeadings.each(function(f, i) {
+  filterHeadings.each(function (f, i) {
     d3.select(this)
-      .append('ul')
-        .classed('dv-filters__list', true)
-      .selectAll('li')
+      .append('select')
+      .classed('dv-filters__select', true)
+      .attr('id', `filter${i}`)
+      .on('change', onFilterChange)
+      .selectAll('option')
       .data(filtersData[i][1])
-      .join('li')
-        .html(d => `${d.text}
-            <span class="dv-filter__count">${data.pathways.filter(p => (d.modifier == 'NOT') ? p[d.filter_name] != d.code : p[d.filter_name] == d.code).length}<span>`)
-        .classed('dv-filter', true)
-        .classed('dv-filter--indent', d => d.indent)
-        .on('click', onFilterClick)
+      .join('option')
+        .html((d, i) => `${d.indent ? '&nbsp;&nbsp;&nbsp;' : ''}${d.text} ${
+          i == 0 ? '' : `(${ data.pathways.filter(p => (d.modifier == 'NOT') ? p[d.filter_name] != d.code : p[d.filter_name] == d.code).length })`
+          }`)
+        .attr('value', d => d.text)
   })
-  
-  let filters = filterHeadings.selectAll('.dv-filter')
 
-  function onFilterClick(e, d) {
-    d.active = !d.active
+  let filters = viz.selectAll('.dv-filters__select')
+
+  function onFilterChange(e, d) {
     pathwaysData = data.pathways
-    filters
-      .classed('active', f => f.active)
-      .each(f => f.active && (
-        pathwaysData = pathwaysData.filter(p => (f.modifier == 'NOT')
-          ? p[f.filter_name] != f.code
-          : p[f.filter_name] == f.code)
-      ))
+    filters.each(function (f, i) {
+      let value = d3.select(this).property("value")
+      if (value != 'All') {
+        let filter = filtersData[i][1].find(g => g.text == value)
+        pathwaysData = pathwaysData.filter(p => (filter.modifier == 'NOT') ? p[filter.filter_name] != filter.code : p[filter.filter_name] == filter.code)
+      }
+    })
     updatePathways()
   }
 

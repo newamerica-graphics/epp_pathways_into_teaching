@@ -73,32 +73,21 @@
   grid-area: filters;
   overflow-y: scroll;
 
-  &__list {
-    padding: 0;
+  &__label {
     margin: 0;
   }
-}
 
-.dv-filter {
-  font-family: inherit;
-  font-size: inherit;
-  display: block;
-  line-height: inherit;
-  margin-bottom: 0.2em;
-
-  &.active {
-    font-weight: bold;
-  }
-
-  &--indent {
-    margin-left: 1em;
-  }
-
-  &__count {
-    color: #717171;
-    margin-left: 0.3em;
+  &__select {
+    display: block;
+    font-family: inherit;
+    font-size: 100%;
+    margin: 0.2rem 0 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2px 5px;
   }
 }
+
 
 .dv-info {
   grid-area: info;
