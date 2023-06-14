@@ -106,7 +106,10 @@ export default function (el, data) {
           .classed('dv-pathway', true)
           .html(d => d["usps"])
           .sort((a, b) => current_answers.findIndex(an => an.answer_code == a[current_question_code]) - current_answers.findIndex(an => an['answer_code'] == b[current_question_code]))
-          .style('background-color', d => colors[(current_answers.find(a => a.answer_code == d[current_question_code]) ? current_answers.find(a => a.answer_code == d[current_question_code]).color : 'grey')][d.isSelected ? 'darkest' : 'light'])
+        .style('background-color', d => {
+            let current_answer = current_answers.find(a => a.answer_code == d[current_question_code])
+            return colors[current_answer ? current_answer.color : 'grey'][d.isSelected ? 'darkest' : ((current_answer && current_answer.color_variation) ? current_answer.color_variation : 'light')]
+          })
           .style('color', d => d.isSelected ? 'white' : null)
           .on("click", onPathwayClick)
       question.select('.dv-legend')
@@ -114,8 +117,7 @@ export default function (el, data) {
         .data(current_answers)
         .join('li')
           .html(d => `${pathwaysData.filter(p => d.answer_code == p[current_question_code]).length} ${d.answer_text}`)
-          .style('background-color', d => colors[d.color].lightest)
-        .style('color', d => colors[d.color].darkest)
+          .style('background-color', d => colors[d.color][d.color_variation ? d.color_variation : 'light'])
     })
     updatePathwaysHeight()
   }
