@@ -63,6 +63,10 @@
     border-left: 1px solid #575757;
     padding-left: 1em;
   }
+  &--indented-2 {
+    border-left: 1px solid #575757;
+    padding-left: 2em;
+  }
 
   &__description {
     margin: 0 0 0.7em;
@@ -116,6 +120,9 @@
 
   &__item--indented {
     margin-left: 1em;
+  }
+  &__item--indented-2 {
+    margin-left: 2em;
   }
 }
 

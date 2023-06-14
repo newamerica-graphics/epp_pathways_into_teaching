@@ -74,6 +74,7 @@ export default function (el, data) {
     .join('div')
       .classed('dv-question', true)
       .classed('dv-question--indented', d => d.heading_level == 'h4')
+      .classed('dv-question--indented-2', d => d.heading_level == 'h5')
       .html(d => `
         ${d.heading_before ? `<h2>${d.heading_before}</h2>` : ''}
         <${d.heading_level}>${d.question_text}</${d.heading_level}>
@@ -133,7 +134,7 @@ export default function (el, data) {
       <div class="dv-info__heading">${marked.parseInline(d.pathway)}</div>
       <dt>Credential</dt><dd>${marked.parseInline(d.credential)}</dd>
       ${questionsData.reduce((acc, q) => acc + `
-        <div class="dv-info__item ${q.heading_level == 'h4' ? 'dv-info__item--indented' : ''}">
+        <div class="dv-info__item ${q.heading_level == 'h4' ? 'dv-info__item--indented' : (q.heading_level == 'h5' ? 'dv-info__item--indented-2' : '')}">
           <dt>${q.question_text}</dt>
           <dd class="color color--${data.answers.filter(a => a.question == q.question_code).find(a => a.answer_code == d[q.question_code])
             ? data.answers.filter(a => a.question == q.question_code).find(a => a.answer_code == d[q.question_code]).color
