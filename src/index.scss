@@ -56,9 +56,13 @@
 .dv-questions {
   grid-area: questions;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 }
 
 .dv-question {
+  padding-bottom: 20px;
+  
   &--indented {
     border-left: 1px solid #575757;
     padding-left: 1em;
