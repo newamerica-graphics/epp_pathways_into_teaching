@@ -73,19 +73,30 @@ export default function (el, data) {
     .data(questionsData)
     .join('div')
       .classed('dv-question', true)
-      .classed('dv-question--indented', d => d.heading_level == 'h4')
+      .classed('dv-question--indented', d => d.heading_level != 'h3')
       .classed('dv-question--indented-2', d => d.heading_level == 'h5')
-      .html(d => `
+      .html((d, i) => `
         ${d.heading_before ? `<h2>${d.heading_before}</h2>` : ''}
-        <${d.heading_level}>${d.question_text}</${d.heading_level}>
-        ${d.description ? `<p class="dv-question__description">${d.description}</p>` : ''}
+        <${d.heading_level} class="dv-question__heading" data-for="#dv-question__chart${i}">${d.question_text}</${d.heading_level}>
+        <div class="dv-question__chart" id="dv-question__chart${i}">
+          ${d.description ? `<p class="dv-question__description">${d.description}</p>` : ''}
+        </div>
       `)
   
+  viz.selectAll('.dv-question--indented').select('.dv-question__heading').on('click', function () {
+    let heading = d3.select(this)
+    let chart = d3.select(heading.attr('data-for'))
+    heading.classed('active', !heading.classed('active'))
+    chart.classed('active', !chart.classed('active'))
+  })
+  
   questions.each(function(q) {
-    d3.select(this).append('div')
-      .classed('dv-legend', true)
-    d3.select(this).append('div')
-      .classed('dv-pathways', true)
+    d3.select(this).select('.dv-question__chart')
+      .append('div')
+        .classed('dv-legend', true)
+    d3.select(this).select('.dv-question__chart')
+      .append('div')
+        .classed('dv-pathways', true)
   })
 
   function updatePathwaysHeight() {
@@ -93,7 +104,6 @@ export default function (el, data) {
     viz.selectAll('.dv-pathways')
       .style('height', `${24.7*Math.ceil(pathwaysData.length/((questionsWidth-30)/35))}px`)
   }
-
 
   function updatePathways() {
     questions.each(function (q) {
