@@ -11,11 +11,12 @@ marked.use({
 
 export default function (el, data) {
   const viz = d3.select(el).html(`
+  <h1>Further Explore State Pathways into Teaching</h1>
   <div class="dv-main">
     <div class="dv-filters">
       <h2>Filter pathways <button id="clearFilters">Clear</button></h2>
     </div>
-    <div class="dv-info">Click on a pathway for more information.</div>
+    <div class="dv-info">Each square represents one pathway into teaching (with specific state noted). Click on any square for more information about that pathway (click the square again to deselect).</div>
     <div class="dv-questions"></div>
     </div>
   </div>
@@ -160,7 +161,7 @@ export default function (el, data) {
   }
   function unhighlightPathway() {
     data.pathways.forEach(d => d.isSelected = false)
-    infoBox.html('Click on a pathway for more information.')
+    infoBox.html('Each square represents one pathway into teaching (with specific state noted). Click on any square for more information about that pathway (click the square again to deselect).')
   }
     
   function onPathwayClick(e, d) {
