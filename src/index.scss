@@ -68,10 +68,22 @@
   column-gap: 2em;
   row-gap: 1em;
   grid-template: 
-    "filters questions"
-    "info    questions"
-    / 15em auto;
-  height: calc(100vh - 8em);
+    "filters"
+    "info"
+    "questions";
+  @media screen and (min-width: 30rem) {
+    grid-template: 
+      "filters   info"
+      "questions questions"
+      / 1fr 1fr;
+  }
+  @media screen and (min-width: 60rem) {
+    grid-template: 
+      "filters questions"
+      "info    questions"
+      / 15rem auto;
+    height: calc(100vh - 8em);
+  }
 }
 
 .dv-questions {
