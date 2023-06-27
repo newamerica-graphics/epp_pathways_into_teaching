@@ -78,7 +78,7 @@ export default function (el, data) {
       .classed('dv-question--indented-2', d => d.heading_level == 'h5')
       .html((d, i) => `
         ${d.heading_before ? `<h2>${d.heading_before}</h2>` : ''}
-        <${d.heading_level} class="dv-question__heading" data-for="#dv-question__chart${i}">${d.question_text}</${d.heading_level}>
+        ${d.question_text ? `<${d.heading_level} class="dv-question__heading" data-for="#dv-question__chart${i}">${d.question_text}</${d.heading_level}>` : ''}
         <div class="dv-question__chart" id="dv-question__chart${i}">
           ${d.description ? `<p class="dv-question__description">${d.description}</p>` : ''}
         </div>

@@ -9,21 +9,7 @@ const settings = {
   }
 };
 
-// TODO: use https://na-data-sheetsstorm.s3.us-west-2.amazonaws.com/prod/epp/pathways_into_teaching.json
-async function fetchData() {
-  const pathways = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/pathways')
-  const filters = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/filters')
-  const questions = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/questions')
-  const answers = await fetch('https://opensheet.elk.sh/13YO_fBoEtzbfzDEoc_m_0GG5FmvPCz-fofCXRy20ick/answers')
-  return {
-    pathways: await pathways.json(),
-    filters: await filters.json(),
-    questions: await questions.json(),
-    answers: await answers.json(),
-  }
-}
-
-fetchData().then((_data) => {
+fetch('https://na-data-sheetsstorm.s3.us-west-2.amazonaws.com/prod/epp/pathways_into_teaching.json').then(response => response.json()).then((_data)=>{
   data = _data;
   for(let i=0; i<queue.length; i++)
     queue[i]();
