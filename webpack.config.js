@@ -16,7 +16,7 @@ module.exports = env => {
     plugins: [
       env.deploy === "development" && new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({
-        title: "",
+        title: "Pathways into Teaching 2024",
         chartIDs: [
           'viz__id'
         ],

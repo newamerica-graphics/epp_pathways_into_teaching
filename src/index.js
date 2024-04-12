@@ -9,7 +9,7 @@ const settings = {
   }
 };
 
-fetch('https://na-data-sheetsstorm.s3.us-west-2.amazonaws.com/prod/epp/pathways_into_teaching.json').then(response => response.json()).then((_data)=>{
+fetch('https://na-data-sheetsstorm.s3.us-west-2.amazonaws.com/prod/epp/pathways_into_teaching_2024.json').then(response => response.json()).then((_data)=>{
   data = _data;
   for(let i=0; i<queue.length; i++)
     queue[i]();
