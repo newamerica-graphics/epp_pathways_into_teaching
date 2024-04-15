@@ -11,7 +11,7 @@ marked.use({
 
 export default function (el, data) {
   const viz = d3.select(el).html(`
-  <h1>Further Explore State Pathways into Teaching</h1>
+  <h1>Explore State Pathways into Teaching</h1>
   <div class="dv-main">
     <div class="dv-filters">
       <h2>Filter pathways <button id="clearFilters">Clear</button></h2>
