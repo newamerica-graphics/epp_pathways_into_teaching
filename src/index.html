@@ -9,6 +9,10 @@
   </title>
   <link rel="stylesheet" type="text/css" href="https://d3fvh0lm0eshry.cloudfront.net/static/css/newamericadotorg.lite.css"
   />
+  <!-- report content height to parent for responsive iframe -->
+  <script>
+    !function(){function e(){const e=function(){document.documentElement.style.height="auto";const e=document.documentElement.getBoundingClientRect();return Math.ceil(e.height)}();window.parent.postMessage({type:"resize",height:e},"*")}if(window.addEventListener("load",e),"ResizeObserver"in window){new ResizeObserver((()=>e())).observe(document.documentElement)}window.addEventListener("resize",(()=>{requestAnimationFrame((()=>e()))}))}();
+  </script>
   <script>
     window.user = { isAuthenticated: true };
   </script>
