@@ -1,22 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://d3fvh0lm0eshry.cloudfront.net/static/css/newamericadotorg.lite.css"
+    />
+    
+    <!-- report content height to parent for responsive iframe -->
+    <script>
+      !(function () {
+        function sendHeight() {
+          document.documentElement.style.height = "auto";
+          const h = Math.ceil(
+            document.documentElement.getBoundingClientRect().height,
+          );
+          window.parent.postMessage({ type: "resize", height: h }, "*");
+        }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>
-    <%= htmlWebpackPlugin.options.title %>
-  </title>
-  <link rel="stylesheet" type="text/css" href="https://d3fvh0lm0eshry.cloudfront.net/static/css/newamericadotorg.lite.css"
-  />
-  <!-- report content height to parent for responsive iframe -->
-  <script>
-    !function(){function e(){const e=function(){document.documentElement.style.height="auto";const e=document.documentElement.getBoundingClientRect();return Math.ceil(e.height)}();window.parent.postMessage({type:"resize",height:e},"*")}if(window.addEventListener("load",e),"ResizeObserver"in window){new ResizeObserver((()=>e())).observe(document.documentElement)}window.addEventListener("resize",(()=>{requestAnimationFrame((()=>e()))}))}();
-  </script>
-  <script>
-    window.user = { isAuthenticated: true };
-  </script>
-  <!-- <style>
+        window.addEventListener("load", function () {
+          sendHeight();
+
+          // Poll for a few seconds to catch async chart rendering
+          let polls = 0;
+          const interval = setInterval(function () {
+            sendHeight();
+            if (++polls >= 10) clearInterval(interval); // 10 × 300ms = 3s
+          }, 300);
+        });
+
+        if ("ResizeObserver" in window) {
+          new ResizeObserver(function () {
+            sendHeight();
+          }).observe(document.documentElement);
+        }
+
+        window.addEventListener("resize", function () {
+          requestAnimationFrame(sendHeight);
+        });
+      })();
+    </script>
+
+    <script>
+      window.user = { isAuthenticated: true };
+    </script>
+    <!-- <style>
 
   .chart-heading {
     border-top: 1px solid #333;
@@ -28,26 +59,29 @@
   }
 
   </style> -->
-</head>
+  </head>
 
-<body>
-  <% htmlWebpackPlugin.options.chartIDs.forEach(function(id){ %>
+  <body>
+    <% htmlWebpackPlugin.options.chartIDs.forEach(function(id){ %>
     <!-- <div class="chart-heading">
       chartId: <h4 class="inline"><%= id %></h4>
     </div> -->
     <div id="<%= id %>" class="na-dataviz"></div>
     <% }) %>
-  <script src="https://d3fvh0lm0eshry.cloudfront.net/static/js/newamericadotorg.lite.js"></script>
-  <script src="bundle.js"></script>
-  <script>newamericadotorg.init({ baseUrl: 'https://na-staging.herokuapp.com/api/' });</script>
-  <script>
-    var charts = document.querySelectorAll('.na-dataviz');
-    if (charts) {
-      for (let i = 0; i < charts.length; i++) {
-        renderDataViz(charts[i]);
+    <script src="https://d3fvh0lm0eshry.cloudfront.net/static/js/newamericadotorg.lite.js"></script>
+    <script src="bundle.js"></script>
+    <script>
+      newamericadotorg.init({
+        baseUrl: "https://na-staging.herokuapp.com/api/",
+      });
+    </script>
+    <script>
+      var charts = document.querySelectorAll(".na-dataviz");
+      if (charts) {
+        for (let i = 0; i < charts.length; i++) {
+          renderDataViz(charts[i]);
+        }
       }
-    }
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
