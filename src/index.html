@@ -9,7 +9,7 @@
       type="text/css"
       href="https://d3fvh0lm0eshry.cloudfront.net/static/css/newamericadotorg.lite.css"
     />
-    
+
     <!-- report content height to parent for responsive iframe -->
     <script>
       !(function () {
@@ -21,22 +21,34 @@
           window.parent.postMessage({ type: "resize", height: h }, "*");
         }
 
-        window.addEventListener("load", function () {
-          sendHeight();
-
-          // Poll for a few seconds to catch async chart rendering
-          let polls = 0;
-          const interval = setInterval(function () {
-            sendHeight();
-            if (++polls >= 10) clearInterval(interval); // 10 × 300ms = 3s
-          }, 300);
+        // Observe any element that changes size
+        const ro = new ResizeObserver(function () {
+          requestAnimationFrame(sendHeight);
         });
 
-        if ("ResizeObserver" in window) {
-          new ResizeObserver(function () {
-            sendHeight();
-          }).observe(document.documentElement);
+        // Observe the document root
+        ro.observe(document.documentElement);
+        ro.observe(document.body);
+
+        // Also observe chart containers once they exist
+        function observeCharts() {
+          document
+            .querySelectorAll(".na-dataviz, .na-dataviz *")
+            .forEach(function (el) {
+              ro.observe(el);
+            });
         }
+
+        window.addEventListener("load", function () {
+          sendHeight();
+          observeCharts();
+
+          // MutationObserver to catch chart containers being populated
+          new MutationObserver(function (mutations) {
+            sendHeight();
+            observeCharts(); // re-run in case new elements were added
+          }).observe(document.body, { childList: true, subtree: true });
+        });
 
         window.addEventListener("resize", function () {
           requestAnimationFrame(sendHeight);
