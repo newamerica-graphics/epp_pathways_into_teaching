@@ -23,6 +23,6 @@ do
   fi
 done
 
-aws cloudfront create-invalidation --distribution-id E15K2IVEDI1Y6H --paths /$1/dist/bundle.js.gz /$1/bundle.js
+aws cloudfront create-invalidation --distribution-id E15K2IVEDI1Y6H --paths "/$1/*"
 
 echo "Deployed to: https://data.newamerica.org/$1"
