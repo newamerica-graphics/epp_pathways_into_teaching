@@ -21,38 +21,11 @@
           window.parent.postMessage({ type: "resize", height: h }, "*");
         }
 
-        // Observe any element that changes size
-        const ro = new ResizeObserver(function () {
-          requestAnimationFrame(sendHeight);
-        });
-
-        // Observe the document root
-        ro.observe(document.documentElement);
-        ro.observe(document.body);
-
-        // Also observe chart containers once they exist
-        function observeCharts() {
-          document
-            .querySelectorAll(".na-dataviz, .na-dataviz *")
-            .forEach(function (el) {
-              ro.observe(el);
-            });
-        }
-
-        window.addEventListener("load", function () {
-          sendHeight();
-          observeCharts();
-
-          // MutationObserver to catch chart containers being populated
-          new MutationObserver(function (mutations) {
-            sendHeight();
-            observeCharts(); // re-run in case new elements were added
-          }).observe(document.body, { childList: true, subtree: true });
-        });
-
+        window.addEventListener("load", sendHeight);
         window.addEventListener("resize", function () {
           requestAnimationFrame(sendHeight);
         });
+        window.addEventListener("dataviz-updated", sendHeight);
       })();
     </script>
 
