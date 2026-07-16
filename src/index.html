@@ -18,10 +18,12 @@
           const h = Math.ceil(
             document.documentElement.getBoundingClientRect().height,
           );
+          //debug
+          // console.log("sendHeight:", h);
           window.parent.postMessage({ type: "resize", height: h }, "*");
         }
 
-        window.addEventListener("load", sendHeight);
+        // window.addEventListener("load", sendHeight);
         window.addEventListener("resize", function () {
           requestAnimationFrame(sendHeight);
         });
