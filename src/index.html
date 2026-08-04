@@ -19,7 +19,7 @@
             document.documentElement.getBoundingClientRect().height,
           );
           //debug
-          // console.log("sendHeight:", h);
+          console.log("sendHeight fired, height:", h);
           window.parent.postMessage({ type: "resize", height: h }, "*");
         }
 
