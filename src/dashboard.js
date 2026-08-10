@@ -104,7 +104,6 @@ export default function (el, data) {
     let questionsWidth = questions.node().getBoundingClientRect().width
     viz.selectAll('.dv-pathways')
       .style('height', `${24.7*Math.ceil(pathwaysData.length/((questionsWidth-30)/35))}px`)
-    console.log("dataviz-updated dispatched"); // debug
     window.dispatchEvent(new Event('dataviz-updated'))
   }
 

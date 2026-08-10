@@ -18,8 +18,6 @@
           const h = Math.ceil(
             document.documentElement.getBoundingClientRect().height,
           );
-          //debug
-          console.log("sendHeight fired, height:", h);
           window.parent.postMessage({ type: "resize", height: h }, "*");
         }
 
